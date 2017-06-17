@@ -1,0 +1,10 @@
+#!/bin/zsh
+for x in "$@"; do
+	for p in $(pgrep "${x}"); do
+		grep -A 2 SYSV /proc/$p/smaps|grep Rss; 
+	done								|
+	awk '
+	/./	{ s += $2 }
+	END	{ print s }
+'
+done
